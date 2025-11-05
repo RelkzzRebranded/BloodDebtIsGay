@@ -21,7 +21,5 @@ end
 if CheckFFlagValue("DebugRunParallelLuaOnMainThread", true) then
   Load()
 else
-  run_on_actor(actors[1], [=[
-    Load()
-  ]=])
+  run_on_actor(actors[1], Load())
 end
