@@ -15,11 +15,14 @@ local function CheckFFlagValue(Name, Value)
 
 	return false
 end
-local function Load()
-  return loadstring(game:HttpGet("https://raw.githubusercontent.com/RelkzzRebranded/BloodDebtIsGay/refs/heads/main/core.lua"))()
+local function LoadScript()
+    return [=[
+        print("hii")
+        return loadstring(game:HttpGet("https://raw.githubusercontent.com/RelkzzRebranded/BloodDebtIsGay/refs/heads/main/core.lua"))()
+    ]=]
 end
 if CheckFFlagValue("DebugRunParallelLuaOnMainThread", true) then
-  Load()
+    loadstring(LoadScript())()
 else
-  run_on_actor(actors[1], Load())
+    run_on_actor(actors[1], LoadScript())
 end
