@@ -1,5 +1,4 @@
 -- Compiled with roblox-ts v3.0.0
--- SETTINGS
 local HitChance = 100
 local wallcheck = false
 local TargetParts = { "Head", "Torso" }
@@ -7,21 +6,13 @@ local radius = 300
 local Players = cloneref(game:GetService("Players"))
 local RunService = cloneref(game:GetService("RunService"))
 local ReplicatedStorage = cloneref(game:GetService("ReplicatedStorage"))
-local UserInputService = cloneref(game:GetService("UserInputService"))
 local Workspace = game:GetService("Workspace")
 local LocalPlayer = Players.LocalPlayer
--- eslint-disable-next-line @typescript-eslint/no-require-imports
+local ClientModules = ReplicatedStorage:WaitForChild("Client")
 setthreadidentity(2)
-local FastCast = require(game:GetService("ReplicatedStorage").gun_res.lib.projectileHandler.FastCastRedux)
+local FastCast = require(ClientModules:WaitForChild("FastCastRedux"))
 setthreadidentity(8)
 local Camera = Workspace.CurrentCamera
---[[
-	***********************************************************
-	 * UTILITIES
-	 * Description: Helper functions and classes
-	 * Last updated: Feb. 14, 2024
-	 ***********************************************************
-]]
 local Bin
 do
 	Bin = setmetatable({}, {
@@ -86,13 +77,6 @@ do
 		return self.head == nil
 	end
 end
---[[
-	***********************************************************
-	 * COMPONENTS
-	 * Description: Classes for specific entities/objects
-	 * Last updated: Feb. 14, 2024
-	 ***********************************************************
-]]
 local BaseComponent
 do
 	BaseComponent = setmetatable({}, {
@@ -236,18 +220,10 @@ do
 	end
 	PlayerComponent.active = {}
 end
---[[
-	***********************************************************
-	 * CONTROLLERS
-	 * Description: Singletons that are used once
-	 * Last updated: Feb. 14, 2024
-	 ***********************************************************
-]]
 local ComponentController = {}
 do
 	local _container = ComponentController
 	local rayParams
-	-- MAIN
 	local onPlayerAdded = function(instance)
 		PlayerComponent.new(instance)
 	end
@@ -283,7 +259,8 @@ do
 	end
 	local function getTarget()
 		local list = PlayerComponent.active
-		local mousePosition = UserInputService:GetMouseLocation()
+		local viewportSize = Camera.ViewportSize
+		local screenCenter = Vector2.new(viewportSize.X / 2, viewportSize.Y / 2)
 		local bestTarget
 		local weight = -math.huge
 		-- ▼ ReadonlyMap.forEach ▼
@@ -298,11 +275,9 @@ do
 			end
 			local position = character.root.Position
 			local viewportPoint = Camera:WorldToViewportPoint(position)
-			-- Out of view
 			if viewportPoint.Z < 0 then
 				return nil
 			end
-			-- Visible to camera or Wallcheck
 			if wallcheck then
 				local origin = Camera.CFrame.Position
 				rayParams.FilterDescendantsInstances = { character.instance, LocalPlayer.Character }
@@ -311,7 +286,7 @@ do
 					return nil
 				end
 			end
-			local screenDistance = (Vector2.new(viewportPoint.X, viewportPoint.Y) - mousePosition).Magnitude
+			local screenDistance = (Vector2.new(viewportPoint.X, viewportPoint.Y) - screenCenter).Magnitude
 			if screenDistance > radius then
 				return nil
 			end
@@ -328,7 +303,6 @@ do
 		return bestTarget
 	end
 	_container.getTarget = getTarget
-	--* @hidden 
 	local function __init()
 		local _exp = Players:GetPlayers()
 		-- ▼ ReadonlyArray.forEach ▼
@@ -359,7 +333,6 @@ local RangeController = {}
 do
 	local _container = RangeController
 	local target
-	-- MAIN
 	local calculateChance = function(Percentage)
 		Percentage = math.floor(Percentage)
 		local random = Random.new()
@@ -368,7 +341,10 @@ do
 	end
 	local getTarget = ComponentController.getTarget
 	local function __init()
-		local oldFire = FastCast.Fire
+		local oldFire = function(...)
+			local args = { ... }
+			return FastCast:Fire(unpack(args))
+		end
 		FastCast.Fire = function(_table, origin, direction, velocity, fastCastBehavior)
 			local target = getTarget()
 			local chance = calculateChance(HitChance)
@@ -397,9 +373,10 @@ do
 	local function __init()
 		RunService.RenderStepped:Connect(function()
 			if circle then
-				local mousePosition = UserInputService:GetMouseLocation()
+				local viewportSize = Camera.ViewportSize
+				local screenCenter = Vector2.new(viewportSize.X / 2, viewportSize.Y / 2)
 				circle.Radius = radius
-				circle.Position = Vector2.new(mousePosition.X, mousePosition.Y)
+				circle.Position = Vector2.new(screenCenter.X, screenCenter.Y)
 			end
 		end)
 	end
