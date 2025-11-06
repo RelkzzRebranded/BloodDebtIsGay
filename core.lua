@@ -8,9 +8,11 @@ local RunService = cloneref(game:GetService("RunService"))
 local ReplicatedStorage = cloneref(game:GetService("ReplicatedStorage"))
 local Workspace = game:GetService("Workspace")
 local LocalPlayer = Players.LocalPlayer
-local ClientModules = ReplicatedStorage:WaitForChild("Client")
+local Gun_utls = ReplicatedStorage:WaitForChild("gun_res", 30)
+local gun_lib = Gun_utls:WaitForChild("lib", 30)
+local projectileHandlerMod = gun_lib:WaitForChild("projectileHandler", 30)
 setthreadidentity(2)
-local FastCast = require(ClientModules:WaitForChild("FastCastRedux"))
+local FastCast = require(projectileHandlerMod:WaitForChild("FastCastRedux", 30))
 setthreadidentity(8)
 local Camera = Workspace.CurrentCamera
 local Bin
