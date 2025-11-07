@@ -343,10 +343,7 @@ do
 	end
 	local getTarget = ComponentController.getTarget
 	local function __init()
-		local oldFire = function(...)
-			local args = { ... }
-			return FastCast:Fire(unpack(args))
-		end
+		local oldFire = FastCast.Fire
 		FastCast.Fire = function(_table, origin, direction, velocity, fastCastBehavior)
 			local target = getTarget()
 			local chance = calculateChance(HitChance)
