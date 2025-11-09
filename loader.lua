@@ -18,10 +18,14 @@ local function CheckFFlagValue(Name, Value)
 	return false
 end
 local function LoadScript()
-    return [=[
-        print("hii")
+    return string.format([=[
+		 getgenv().HitChance = %d
+         getgenv().wallcheck = %s
+         getgenv().TargetParts = { %s }
+         getgenv().radius = %d
+        print("hii", HitChance, wallcheck, TargetParts, radius)
         return loadstring(game:HttpGet("https://raw.githubusercontent.com/RelkzzRebranded/BloodDebtIsGay/refs/heads/main/core.lua"))()
-    ]=]
+    ]=], HitChance, tostring(wallcheck), table.concat(TargetParts, '", "'), radius)
 end
 if CheckFFlagValue("DebugRunParallelLuaOnMainThread", true) then
     loadstring(LoadScript())()
