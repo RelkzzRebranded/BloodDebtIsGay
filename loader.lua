@@ -18,6 +18,10 @@ local function CheckFFlagValue(Name, Value)
 	return false
 end
 local function LoadScript()
+	local HitChance = getgenv().HitChance or 100
+    local wallcheck = getgenv().wallcheck or false
+    local TargetParts = getgenv().TargetParts or {"Head"}
+    local radius = getgenv().radius or 100
     return string.format([=[
 		 getgenv().HitChance = %d
          getgenv().wallcheck = %s
