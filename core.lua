@@ -1,4 +1,5 @@
 -- Compiled with roblox-ts v3.0.0
+print(HitChance, wallcheck, TargetParts, radius)
 local HitChance = getgenv().HitChance or 100
 local wallcheck = getgenv().wallcheck or false
 local TargetParts = getgenv().TargetParts or {"Head"}
