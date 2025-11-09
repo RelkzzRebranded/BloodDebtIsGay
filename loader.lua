@@ -1,5 +1,5 @@
-local run_parallel = run_on_thread or run_on_actor
-local availableActors = getactorthreads or getactors
+local run_parallel = run_on_actor or run_on_thread
+local availableActors = getactors or getactorthreads
 
 local function CheckFFlagValue(Name, Value)
 	local Success, Result = pcall(getfflag, Name)
