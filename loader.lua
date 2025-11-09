@@ -1,4 +1,6 @@
-local actors = getactors()
+local run_parallel = run_on_thread or run_on_actor
+local availableActors = getactorthreads or getactors
+
 local function CheckFFlagValue(Name, Value)
 	local Success, Result = pcall(getfflag, Name)
 	if not Success then
@@ -24,5 +26,5 @@ end
 if CheckFFlagValue("DebugRunParallelLuaOnMainThread", true) then
     loadstring(LoadScript())()
 else
-    run_on_actor(actors[1], LoadScript())
+    run_parallel(availableActors()[1], LoadScript())
 end
