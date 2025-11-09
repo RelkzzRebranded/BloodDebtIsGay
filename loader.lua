@@ -35,10 +35,9 @@ local function LoadScript()
          getgenv().wallcheck = %s
          getgenv().TargetParts = { %s }
          getgenv().radius = %d
-        print("hii", HitChance, wallcheck, TargetParts, radius)
+        print("hii", getgenv().HitChance, getgenv().wallcheck, getgenv().TargetParts, getgenv().radius)
         return loadstring(game:HttpGet("https://raw.githubusercontent.com/RelkzzRebranded/BloodDebtIsGay/refs/heads/main/core.lua"))()
     ]=], HitChance, tostring(wallcheck), targetPartsString, radius)
-	warn(code)
     return code
 end
 if CheckFFlagValue("DebugRunParallelLuaOnMainThread", true) then
