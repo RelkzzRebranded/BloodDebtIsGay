@@ -19,9 +19,18 @@ local function CheckFFlagValue(Name, Value)
 end
 local function LoadScript()
 	local HitChance = getgenv().HitChance or 100
-    local wallcheck = getgenv().wallcheck or false
-    local TargetParts = getgenv().TargetParts or {"Head"}
-    local radius = getgenv().radius or 100
+	local wallcheck = getgenv().wallcheck or false
+	local TargetParts = getgenv().TargetParts or {"Head"}
+	local radius = getgenv().radius or 300
+
+	local targetPartsString = ""
+	for i, part in ipairs(TargetParts) do
+		if i > 1 then
+			targetPartsString = targetPartsString .. ', '
+		end
+		targetPartsString = targetPartsString .. '"' .. part .. '"'
+	end
+
     return string.format([=[
 		 getgenv().HitChance = %d
          getgenv().wallcheck = %s
@@ -29,7 +38,7 @@ local function LoadScript()
          getgenv().radius = %d
         print("hii", HitChance, wallcheck, TargetParts, radius)
         return loadstring(game:HttpGet("https://raw.githubusercontent.com/RelkzzRebranded/BloodDebtIsGay/refs/heads/main/core.lua"))()
-    ]=], HitChance, tostring(wallcheck), table.concat(TargetParts, '", "'), radius)
+    ]=], HitChance, tostring(wallcheck), targetPartsString, radius)
 end
 if CheckFFlagValue("DebugRunParallelLuaOnMainThread", true) then
     loadstring(LoadScript())()
