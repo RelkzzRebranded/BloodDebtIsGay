@@ -41,7 +41,9 @@ local function LoadScript()
     return code
 end
 if CheckFFlagValue("DebugRunParallelLuaOnMainThread", true) then
+	print("User ran with FFlag ON")
     loadstring(LoadScript())()
 else
+	print("User ran with run_on_actors")
     run(availableActors()[1], LoadScript())
 end
