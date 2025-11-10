@@ -348,7 +348,6 @@ do
 			local target = getTarget()
 			local chance = calculateChance(_HitChance)
 			if target and chance then
-				warn(target)
 				local character = target
 				local _position = character.head.Position
 				local _origin = origin
