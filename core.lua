@@ -1,9 +1,8 @@
 -- Compiled with roblox-ts v3.0.0
-print(HitChance, wallcheck, TargetParts, radius)
-local HitChance = getgenv().HitChance or 100
-local wallcheck = getgenv().wallcheck or false
-local TargetParts = getgenv().TargetParts or {"Head"}
-local radius = getgenv().radius or 300
+local HitChance = getgenv().HitChance
+local wallcheck = getgenv().wallcheck
+local TargetParts = getgenv().TargetParts
+local radius = getgenv().radius
 local Players = cloneref(game:GetService("Players"))
 local RunService = cloneref(game:GetService("RunService"))
 local ReplicatedStorage = cloneref(game:GetService("ReplicatedStorage"))
