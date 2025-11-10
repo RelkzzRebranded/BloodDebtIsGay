@@ -347,9 +347,10 @@ do
 		FastCast.Fire = function(_table, origin, direction, velocity, fastCastBehavior)
 			local target = getTarget()
 			local chance = calculateChance(_HitChance)
+			warn("FIRED GUN", chance, target)
 			if target and chance then
 				local character = target
-				warn("FIRED GUN", character.instance)
+				warn(character.instance)
 				local _position = character.head.Position
 				local _origin = origin
 				local newDirection = (_position - _origin).Unit * 1000
