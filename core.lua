@@ -11,9 +11,7 @@ local LocalPlayer = Players.LocalPlayer
 local Gun_utls = ReplicatedStorage:WaitForChild("gun_res", 30)
 local gun_lib = Gun_utls:WaitForChild("lib", 30)
 local projectileHandlerMod = gun_lib:WaitForChild("projectileHandler", 30)
-setthreadidentity(2)
 local FastCast = require(projectileHandlerMod:WaitForChild("FastCastRedux", 30))
-setthreadidentity(8)
 local Camera = Workspace.CurrentCamera
 local Bin
 do
