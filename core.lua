@@ -344,6 +344,7 @@ do
 	local getTarget = ComponentController.getTarget
 	local function __init()
 		local oldFire = FastCast.Fire
+		warn("Ranged INNIT", FastCast)
 		FastCast.Fire = function(_table, origin, direction, velocity, fastCastBehavior)
 			local target = getTarget()
 			local chance = calculateChance(_HitChance)
@@ -398,4 +399,4 @@ ComponentController.__init()
 RangeController.__init()
 VisualsController.__init()
 CameraController.__init()
-return nil
+return 0
