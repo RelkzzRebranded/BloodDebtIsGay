@@ -361,7 +361,7 @@ do
 					end
 					return oldFire(_table, origin, direction, velocity, fastCastBehavior)
 				end
-			end
+			end)
 	end
 	_container.__init = __init
 end
