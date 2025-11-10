@@ -1,8 +1,8 @@
 -- Compiled with roblox-ts v3.0.0
-local HitChance = getgenv().HitChance
-local wallcheck = getgenv().wallcheck
-local TargetParts = getgenv().TargetParts
-local radius = getgenv().radius
+local _HitChance = getgenv().HitChance
+local _wallcheck = getgenv().wallcheck
+local _TargetParts = getgenv().TargetParts
+local _radius = getgenv().radius
 local Players = cloneref(game:GetService("Players"))
 local RunService = cloneref(game:GetService("RunService"))
 local ReplicatedStorage = cloneref(game:GetService("ReplicatedStorage"))
@@ -231,12 +231,12 @@ do
 	end
 	local getRandomPart = function(character)
 		-- ▼ ReadonlyArray.map ▼
-		local _newValue = table.create(#TargetParts)
+		local _newValue = table.create(#_TargetParts)
 		local _callback = function(partName)
 			return character.instance:FindFirstChild(partName)
 		end
-		for _k, _v in TargetParts do
-			_newValue[_k] = _callback(_v, _k - 1, TargetParts)
+		for _k, _v in _TargetParts do
+			_newValue[_k] = _callback(_v, _k - 1, _TargetParts)
 		end
 		-- ▲ ReadonlyArray.map ▲
 		-- ▼ ReadonlyArray.filter ▼
@@ -280,7 +280,7 @@ do
 			if viewportPoint.Z < 0 then
 				return nil
 			end
-			if wallcheck then
+			if _wallcheck then
 				local origin = Camera.CFrame.Position
 				rayParams.FilterDescendantsInstances = { character.instance, LocalPlayer.Character }
 				local result = Workspace:Raycast(origin, position - origin, rayParams)
@@ -289,7 +289,7 @@ do
 				end
 			end
 			local screenDistance = (Vector2.new(viewportPoint.X, viewportPoint.Y) - screenCenter).Magnitude
-			if screenDistance > radius then
+			if screenDistance > _radius then
 				return nil
 			end
 			local prio = 1e3 - screenDistance
@@ -346,8 +346,9 @@ do
 		local oldFire = FastCast.Fire
 		FastCast.Fire = function(_table, origin, direction, velocity, fastCastBehavior)
 			local target = getTarget()
-			local chance = calculateChance(HitChance)
+			local chance = calculateChance(_HitChance)
 			if target and chance then
+				warn(target)
 				local character = target
 				local _position = character.head.Position
 				local _origin = origin
@@ -374,7 +375,7 @@ do
 			if circle then
 				local viewportSize = Camera.ViewportSize
 				local screenCenter = Vector2.new(viewportSize.X / 2, viewportSize.Y / 2)
-				circle.Radius = radius
+				circle.Radius = _radius
 				circle.Position = Vector2.new(screenCenter.X, screenCenter.Y)
 			end
 		end)
