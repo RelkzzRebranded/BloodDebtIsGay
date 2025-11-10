@@ -343,23 +343,25 @@ do
 	end
 	local getTarget = ComponentController.getTarget
 	local function __init()
-		local oldFire = FastCast.Fire
-		warn("Ranged INNIT", FastCast)
-		FastCast.Fire = function(_table, origin, direction, velocity, fastCastBehavior)
-			local target = getTarget()
-			local chance = calculateChance(_HitChance)
-			warn("FIRED GUN", chance, target)
-			if target and chance then
-				local character = target
-				warn(character.instance)
-				local _position = character.head.Position
-				local _origin = origin
-				local newDirection = (_position - _origin).Unit * 1000
-				direction = newDirection
-				velocity = newDirection * 9e9
+		task.defer(function()
+				local oldFire = FastCast.Fire
+			warn("Ranged INNIT", FastCast)
+				FastCast.Fire = function(_table, origin, direction, velocity, fastCastBehavior)
+					local target = getTarget()
+					local chance = calculateChance(_HitChance)
+					warn("FIRED GUN", chance, target)
+					if target and chance then
+						local character = target
+						warn(character.instance)
+						local _position = character.head.Position
+						local _origin = origin
+						local newDirection = (_position - _origin).Unit * 1000
+						direction = newDirection
+						velocity = newDirection * 9e9
+					end
+					return oldFire(_table, origin, direction, velocity, fastCastBehavior)
+				end
 			end
-			return oldFire(_table, origin, direction, velocity, fastCastBehavior)
-		end
 	end
 	_container.__init = __init
 end
