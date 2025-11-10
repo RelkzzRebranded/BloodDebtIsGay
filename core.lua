@@ -349,6 +349,7 @@ do
 			local chance = calculateChance(_HitChance)
 			if target and chance then
 				local character = target
+				warn("FIRED GUN", character.instance)
 				local _position = character.head.Position
 				local _origin = origin
 				local newDirection = (_position - _origin).Unit * 1000
