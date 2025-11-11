@@ -20,7 +20,7 @@ end
 local function LoadScript()
 	local HitChance = getgenv().HitChance or 100
 	local wallcheck = getgenv().wallcheck or false
-	local TargetParts = getgenv().TargetParts or {"Head"}
+	local TargetParts = getgenv().TargetParts or {"Head", "Torso"}
 	local radius = getgenv().radius or 300
 
 	local targetPartsString = ""
@@ -35,7 +35,8 @@ local function LoadScript()
          getgenv().wallcheck = %s
          getgenv().TargetParts = { %s }
          getgenv().radius = %d
-        print("hii", getgenv().HitChance, getgenv().wallcheck, getgenv().TargetParts, getgenv().radius)
+        --print("hii", getgenv().HitChance, getgenv().wallcheck, getgenv().TargetParts, getgenv().radius)
+		table.foreach(getgenv().TargetParts, warn)
         return loadstring(game:HttpGet("https://raw.githubusercontent.com/RelkzzRebranded/BloodDebtIsGay/refs/heads/main/core.lua"))()
     ]=], HitChance, tostring(wallcheck), targetPartsString, radius)
     return code
