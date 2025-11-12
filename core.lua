@@ -262,6 +262,7 @@ do
 		local viewportSize = Camera.ViewportSize
 		local screenCenter = Vector2.new(viewportSize.X / 2, viewportSize.Y / 2)
 		local bestTarget
+		local bestPart
 		local weight = -math.huge
 		-- ▼ ReadonlyMap.forEach ▼
 		local _callback = function(component)
@@ -293,6 +294,7 @@ do
 			local prio = 1e3 - screenDistance
 			if prio > weight then
 				bestTarget = character
+				bestPart = targetPart
 				weight = prio
 			end
 		end
@@ -300,7 +302,7 @@ do
 			_callback(_v, _k, list)
 		end
 		-- ▲ ReadonlyMap.forEach ▲
-		return bestTarget
+		return bestTarget, bestPart
 	end
 	_container.getTarget = getTarget
 	local function __init()
@@ -341,19 +343,21 @@ do
 	end
 	local getTarget = ComponentController.getTarget
 	local function __init()
+		local Fire = FastCast.Fire
 		local oldFire
-		oldFire = hookfunction(FastCast.Fire, function(_table, origin, direction, velocity, FastCastBehaviour)
-			local target = getTarget()
+		oldFire = hookfunction(Fire, function(...)
+			local args = { ... }
+			local target = { getTarget() }
 			local chance = calculateChance(_HitChance)
-			if target and chance then
+			if target[1] and chance then
 				local character = target
-				local _position = character.head.Position
-				local _origin = origin
-				local newDirection = (_position - _origin).Unit * 1000
-				direction = newDirection
-				velocity = newDirection * 9e9
+				local _position = character[2].Position
+				local _arg0 = args[2]
+				local newDirection = (_position - _arg0).Unit * 1000
+				args[3] = newDirection
+				args[4] = newDirection * 9e9
 			end
-			return oldFire(_table, origin, direction, velocity, FastCastBehaviour)
+			return oldFire(unpack(args))
 		end)
 	end
 	_container.__init = __init
