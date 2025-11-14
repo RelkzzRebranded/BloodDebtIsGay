@@ -343,9 +343,8 @@ do
 	end
 	local getTarget = ComponentController.getTarget
 	local function __init()
-		local Fire = FastCast.Fire
-		local oldFire
-		oldFire = hookfunction(Fire, function(...)
+		local oldFire = FastCast.Fire
+		FastCast.Fire = function(...)
 			local args = { ... }
 			local target = { getTarget() }
 			local chance = calculateChance(_HitChance)
@@ -358,7 +357,7 @@ do
 				args[4] = newDirection * 9e9
 			end
 			return oldFire(unpack(args))
-		end)
+		end
 	end
 	_container.__init = __init
 end
