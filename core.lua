@@ -354,7 +354,7 @@ do
 				local _arg0 = args[2]
 				local newDirection = (_position - _arg0).Unit * 1000
 				args[3] = newDirection
-				args[4] = newDirection * 9e9
+				--args[4] = newDirection * 9e9 <-- yup
 			end
 			return oldFire(unpack(args))
 		end
