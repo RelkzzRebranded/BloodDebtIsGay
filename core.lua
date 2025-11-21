@@ -5,13 +5,8 @@ local _TargetParts = getgenv().TargetParts
 local _radius = getgenv().radius
 local Players = cloneref(game:GetService("Players"))
 local RunService = cloneref(game:GetService("RunService"))
-local ReplicatedStorage = cloneref(game:GetService("ReplicatedStorage"))
 local Workspace = game:GetService("Workspace")
 local LocalPlayer = Players.LocalPlayer
-local Gun_utls = ReplicatedStorage:WaitForChild("gun_res", 30)
-local gun_lib = Gun_utls:WaitForChild("lib", 30)
-local projectileHandlerMod = gun_lib:WaitForChild("projectileHandler", 30)
-local FastCast = require(projectileHandlerMod:WaitForChild("FastCastRedux", 30))
 local Camera = Workspace.CurrentCamera
 local Bin
 do
@@ -335,6 +330,7 @@ local RangeController = {}
 do
 	local _container = RangeController
 	local target
+	local canManipulate = false
 	local calculateChance = function(Percentage)
 		Percentage = math.floor(Percentage)
 		local random = Random.new()
@@ -343,23 +339,32 @@ do
 	end
 	local getTarget = ComponentController.getTarget
 	local function __init()
-		local __namecall; __namecall = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
-			local args = {...}
+		RunService.Heartbeat:Connect(function()
+			canManipulate = calculateChance(_HitChance)
+		end)
+		local __namecall
+		__namecall = hookmetamethod(game, "__namecall", function(self, ...)
+			local args = { ... }
 			local method = getnamecallmethod()
-			local source = debug.getinfo(3)
-			if source and source.source:match('ActiveCast') and method == "Raycast" then
-				local target = {getTarget()}
-				local chance = calculateChance(_HitChance)
-				if target[1] and chance then
-					local character = target
-					local _position = character[2].Position
+			local scriptcaller = debug.getinfo(3)
+			local _condition = scriptcaller
+			if _condition then
+				_condition = (string.match(scriptcaller.source, "ActiveCast"))
+				if _condition ~= 0 and _condition == _condition and _condition ~= "" and _condition then
+					_condition = method == "Raycast"
+				end
+			end
+			if _condition ~= 0 and _condition == _condition and _condition ~= "" and _condition then
+				local target = { getTarget() }
+				if target[1] and canManipulate then
+					local _position = target[2].Position
 					local _arg0 = args[2]
-					local newDirection = (_position - _arg0).Unit * 1000
-					args[2] = newDirection
+					local newDir = (_position - _arg0).Unit * 1000
+					args[2] = newDir
 				end
 			end
 			return __namecall(self, unpack(args))
-		end))
+		end)
 	end
 	_container.__init = __init
 end
@@ -368,7 +373,7 @@ do
 	local _container = VisualsController
 	local circle = Drawing.new("Circle")
 	circle.Filled = false
-	circle.NumSides = 16
+	circle.NumSides = 15
 	circle.Thickness = 2
 	circle.Visible = true
 	circle.Color = Color3.new(1, 1, 1)
