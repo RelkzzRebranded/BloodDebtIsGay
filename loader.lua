@@ -1,6 +1,5 @@
 local run = run_on_actor or run_on_thread
 local availableActors = getactors or getactorthreads
-
 local function CheckFFlagValue(Name, Value)
     local Success, Result = pcall(getfflag, Name)
     if not Success then
@@ -17,6 +16,7 @@ local function CheckFFlagValue(Name, Value)
 
     return false
 end
+-- i hate mobile executors
 local function LoadScript()
     local HitChance = getgenv().HitChance or 100
     local wallcheck = getgenv().wallcheck or false
