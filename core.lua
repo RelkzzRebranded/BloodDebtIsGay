@@ -1,4 +1,6 @@
 -- Compiled with roblox-ts v3.0.0
+local run = run_on_actor or run_on_thread
+local availableActors = getactors or getactorthreads
 local _HitChance = getgenv().HitChance
 local _wallcheck = getgenv().wallcheck
 local _TargetParts = getgenv().TargetParts
@@ -343,21 +345,23 @@ do
 	end
 	local getTarget = ComponentController.getTarget
 	local function __init()
-		local oldFire = FastCast.Fire
-		FastCast.Fire = function(...)
-			local args = { ... }
-			local target = { getTarget() }
-			local chance = calculateChance(_HitChance)
-			if target[1] and chance then
-				local character = target
-				local _position = character[2].Position
-				local _arg0 = args[2]
-				local newDirection = (_position - _arg0).Unit * 1000
-				args[3] = newDirection
-				--args[4] = newDirection * 9e9 <-- yup
+		local __namecall; __namecall = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
+			local args = {...}
+			local method = getnamecallmethod()
+			local source = debug.getinfo(3)
+			if source and source.source:match('ActiveCast') and method == "Raycast" then
+				local target = {getTarget()}
+				local chance = calculateChance(_HitChance)
+				if target[1] and chance then
+					local character = target
+					local _position = character[2].Position
+					local _arg0 = args[2]
+					local newDirection = (_position - _arg0).Unit * 1000
+					args[2] = newDirection
+				end
 			end
-			return oldFire(unpack(args))
-		end
+			return __namecall(self, unpack(args))
+		end))
 	end
 	_container.__init = __init
 end
@@ -366,7 +370,7 @@ do
 	local _container = VisualsController
 	local circle = Drawing.new("Circle")
 	circle.Filled = false
-	circle.NumSides = 15
+	circle.NumSides = 16
 	circle.Thickness = 2
 	circle.Visible = true
 	circle.Color = Color3.new(1, 1, 1)
