@@ -341,6 +341,7 @@ do
 	local function __init()
 		RunService.Heartbeat:Connect(function()
 			canManipulate = calculateChance(_HitChance)
+			target = { getTarget() }
 		end)
 		local __namecall
 		__namecall = hookmetamethod(game, "__namecall", function(self, ...)
@@ -355,10 +356,9 @@ do
 				end
 			end
 			if _condition ~= 0 and _condition == _condition and _condition ~= "" and _condition then
-				local target = { getTarget() }
-				if target[1] and canManipulate then
+				if target and target[1] and canManipulate then
 					local _position = target[2].Position
-					local _arg0 = args[2]
+					local _arg0 = args[1]
 					local newDir = (_position - _arg0).Unit * 1000
 					args[2] = newDir
 				end
