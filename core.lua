@@ -1,6 +1,4 @@
 -- Compiled with roblox-ts v3.0.0
-local run = run_on_actor or run_on_thread
-local availableActors = getactors or getactorthreads
 local _HitChance = getgenv().HitChance
 local _wallcheck = getgenv().wallcheck
 local _TargetParts = getgenv().TargetParts
