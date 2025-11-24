@@ -1,3 +1,15 @@
+-- you fuckers are using the most garbage executors, and you still have the nerve to say "its not working" and dislike my post.
+pcall(function()
+	local executorname, version = identifyexecutor()
+	executorname = executorname:upper()
+	
+	if string.match(executorname, "XENO") or string.match(executorname, "SOLARA") then
+		game.Players.LocalPlayer:Kick("GET A BETTER FUCKING EXECUTOR YOU FUCKING MONGOLIAN FUCK.")
+		while true do end -- fuck you if you have solara
+	end
+end
+
+
 local run = run_on_actor or run_on_thread
 local availableActors = getactors or getactorthreads
 local function CheckFFlagValue(Name, Value)
