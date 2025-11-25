@@ -7,7 +7,8 @@ pcall(function()
 		game.Players.LocalPlayer:Kick("GET A BETTER FUCKING EXECUTOR YOU FUCKING MONGOLIAN FUCK.")
 		while true do end -- fuck you if you have solara
 	end
-end
+end)
+
 
 
 local run = run_on_actor or run_on_thread
